@@ -87,6 +87,24 @@ function HomeContent() {
     alert(message);
   };
 
+  const exportToCSV = () => {
+    const selected = Object.keys(checkedAccounts).filter(
+      (name) => checkedAccounts[name]
+    );
+    if (selected.length === 0) {
+      alert("No accounts selected to export");
+      return;
+    }
+    const csv = selected.join("\n");
+    const blob = new Blob([csv], { type: "text/csv" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "accounts-to-delete.csv";
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
   if (!session) {
     return (
       <main className="min-h-screen bg-black text-white flex items-center justify-center">
@@ -130,6 +148,15 @@ function HomeContent() {
                 Delete Selected ({checkedCount})
               </button>
             )}
+
+            {/* Export CSV Button */}
+            <button
+              onClick={exportToCSV}
+              className="bg-green-600 hover:bg-green-700 px-4 py-2 rounded-lg text-sm transition"
+            >
+              Export CSV ({checkedCount})
+            </button>
+
             <button
               onClick={() => signOut()}
               className="bg-gray-800 hover:bg-gray-700 px-4 py-2 rounded-lg text-sm transition"
