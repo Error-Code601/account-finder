@@ -9,7 +9,9 @@ function HomeContent() {
   const { data: session } = useSession();
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [searchQuery, setSearchQuery] = useState("");
-  const [checkedAccounts, setCheckedAccounts] = useState({});
+  const [checkedAccounts, setCheckedAccounts] = useState<
+    Record<string, boolean>
+  >({});
   const [showOnlyChecked, setShowOnlyChecked] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(true);
 
@@ -39,7 +41,7 @@ function HomeContent() {
     ? filteredAccounts.filter((acc) => checkedAccounts[acc.name])
     : filteredAccounts;
 
-  const toggleAccount = (accountName) => {
+  const toggleAccount = (accountName: string) => {
     setCheckedAccounts((prev) => ({
       ...prev,
       [accountName]: !prev[accountName],
@@ -47,7 +49,7 @@ function HomeContent() {
   };
 
   const selectAll = () => {
-    const newChecked = { ...checkedAccounts };
+    const newChecked: Record<string, boolean> = { ...checkedAccounts };
     filteredAccounts.forEach((account) => {
       newChecked[account.name] = true;
     });
@@ -55,7 +57,7 @@ function HomeContent() {
   };
 
   const deselectAll = () => {
-    const newChecked = { ...checkedAccounts };
+    const newChecked: Record<string, boolean> = { ...checkedAccounts };
     filteredAccounts.forEach((account) => {
       delete newChecked[account.name];
     });
